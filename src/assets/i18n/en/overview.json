@@ -1,0 +1,13 @@
+{
+  "TITLE": "Overview",
+  "SUBTITLE": "Up to 15 cars (by license plate). Every car is listed for the week—even with no reservations. Bookings that overlap a day appear in that cell.",
+  "PREV_WEEK": "Previous week",
+  "NEXT_WEEK": "Next week",
+  "THIS_WEEK": "This week",
+  "MAX_CARS": "Showing the first 15 cars (by license plate).",
+  "NO_RES": "None",
+  "NO_CARS": "No cars in the fleet yet.",
+  "RES": "Res.",
+  "CUSTOMER": "Customer",
+  "INACTIVE": "Inactive"
+}

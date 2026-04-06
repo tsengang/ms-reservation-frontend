@@ -30,5 +30,12 @@ export const routes: Routes = [
       import('./features/reservations/reservations.component').then((m) => m.ReservationsComponent),
     canActivate: [authGuard],
   },
+  {
+    path: 'overview',
+    loadComponent: () =>
+      import('./features/overview/overview.component').then((m) => m.OverviewComponent),
+    canActivate: [authGuard],
+  },
+  { path: 'fleet-week', redirectTo: 'overview', pathMatch: 'full' },
   { path: '**', redirectTo: 'customers' },
 ];

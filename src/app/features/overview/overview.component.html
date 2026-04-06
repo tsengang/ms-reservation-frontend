@@ -1,0 +1,79 @@
+<section class="overview">
+  <h2>{{ 'OVERVIEW.TITLE' | translate }}</h2>
+  <p class="muted">{{ 'OVERVIEW.SUBTITLE' | translate }}</p>
+
+  <div class="toolbar">
+    <button type="button" (click)="prevWeek()">{{ 'OVERVIEW.PREV_WEEK' | translate }}</button>
+    <button type="button" class="primary" (click)="thisWeek()">{{ 'OVERVIEW.THIS_WEEK' | translate }}</button>
+    <button type="button" (click)="nextWeek()">{{ 'OVERVIEW.NEXT_WEEK' | translate }}</button>
+    <span class="range">{{ weekRangeLabel() }}</span>
+    <button type="button" class="ghost" (click)="load()">{{ 'FORMS.REFRESH' | translate }}</button>
+  </div>
+
+  @if (truncated) {
+    <p class="note">{{ 'OVERVIEW.MAX_CARS' | translate }}</p>
+  }
+
+  @if (loading) {
+    <p>{{ 'FORMS.LOADING' | translate }}</p>
+  }
+  @if (error) {
+    <p class="err">{{ 'FORMS.ERROR' | translate }}: {{ error }}</p>
+  }
+
+  @if (!loading && !error && grid.length) {
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th class="sticky-col">{{ 'FORMS.CAR' | translate }}</th>
+            @for (day of weekDays; track day.getTime()) {
+              <th>
+                {{ day | date: 'EEE' : undefined : dateLocale }}<br />
+                <span class="day-num">{{ day | date: 'd MMM' : undefined : dateLocale }}</span>
+              </th>
+            }
+          </tr>
+        </thead>
+        <tbody>
+          @for (row of grid; track row.car.id) {
+            <tr>
+              <td class="sticky-col car-cell">
+                <strong>{{ row.car.licensePlate }}</strong>
+                <span class="car-meta">{{ row.car.make }} {{ row.car.model }}</span>
+                @if (!row.car.active) {
+                  <span class="badge-inactive">{{ 'OVERVIEW.INACTIVE' | translate }}</span>
+                }
+              </td>
+              @for (cell of row.cells; track $index) {
+                <td class="cell">
+                  @if (!cell.length) {
+                    <span class="empty">{{ 'OVERVIEW.NO_RES' | translate }}</span>
+                  } @else {
+                    <ul class="res-list">
+                      @for (r of cell; track r.id) {
+                        <li>
+                          <span class="res-id">{{ 'OVERVIEW.RES' | translate }} #{{ r.id }}</span>
+                          <span class="status" [class.cancelled]="r.status === 'CANCELLED'">{{ r.status }}</span>
+                          <div class="cust">{{ customerLabel(r) }}</div>
+                          <div class="times">
+                            {{ r.startDate | date: 'short' : undefined : dateLocale }} →
+                            {{ r.endDate | date: 'short' : undefined : dateLocale }}
+                          </div>
+                        </li>
+                      }
+                    </ul>
+                  }
+                </td>
+              }
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+
+  @if (!loading && !error && !grid.length) {
+    <p>{{ 'OVERVIEW.NO_CARS' | translate }}</p>
+  }
+</section>

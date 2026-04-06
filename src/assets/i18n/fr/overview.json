@@ -1,0 +1,13 @@
+{
+  "TITLE": "Vue d’ensemble",
+  "SUBTITLE": "Jusqu’à 15 véhicules (par plaque). Chaque voiture apparaît pour la semaine, même sans réservation. Les réservations qui chevauchent un jour sont dans la case.",
+  "PREV_WEEK": "Semaine précédente",
+  "NEXT_WEEK": "Semaine suivante",
+  "THIS_WEEK": "Cette semaine",
+  "MAX_CARS": "Affichage des 15 premiers véhicules (par plaque).",
+  "NO_RES": "Aucune",
+  "NO_CARS": "Aucun véhicule dans le parc.",
+  "RES": "Rés.",
+  "CUSTOMER": "Client",
+  "INACTIVE": "Inactif"
+}

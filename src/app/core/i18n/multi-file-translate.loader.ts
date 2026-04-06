@@ -16,11 +16,13 @@ export class MultiFileTranslateLoader implements TranslateLoader {
       header: this.http.get<Record<string, string>>(`${base}/header.json`),
       tabs: this.http.get<Record<string, string>>(`${base}/tabs.json`),
       forms: this.http.get<Record<string, string>>(`${base}/forms.json`),
+      overview: this.http.get<Record<string, string>>(`${base}/overview.json`),
     }).pipe(
-      map(({ header, tabs, forms }) => ({
+      map(({ header, tabs, forms, overview }) => ({
         HEADER: header,
         TABS: tabs,
         FORMS: forms,
+        OVERVIEW: overview,
       })),
     );
   }
