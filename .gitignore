@@ -3,5 +3,8 @@
 /.angular
 .DS_Store
 
-# Local Netlify folder
+# Local Netlify CLI
 .netlify
+
+# Netlify / agent artifacts
+deno.lock

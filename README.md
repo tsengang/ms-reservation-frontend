@@ -18,13 +18,13 @@ This project is **next to** the Java backend repo, not inside it:
   ms-reservation-frontend/ ← this Angular app
 ```
 
-## API URL
+## API URL (`/api`)
 
-A single environment file points at the hosted API:
+`src/environments/environment.ts` uses **`apiBase: '/api'`** (relative):
 
-- `src/environments/environment.ts` → `https://ms-reservation.onrender.com/api`
-
-`ng serve` and `ng build` both use this URL. For local development, the backend must allow your origin in CORS (e.g. `http://localhost:4200`).
+- **Netlify:** `netlify.toml` proxies `/api/*` to `https://ms-reservation.onrender.com/api/*`, so the browser stays same-origin and avoids CORS issues.
+- **Local dev (`ng serve`):** `proxy.conf.json` forwards `/api` to the Render API (see `angular.json` → `proxyConfig`).
+- **Cloudflare Pages:** `_redirects` only handles SPA routing; it does **not** proxy to Render. Either deploy on Netlify, use a Worker to proxy `/api`, or temporarily set `apiBase` to `https://ms-reservation.onrender.com/api` and rely on backend CORS for your Pages origin.
 
 ## Install and run
 
@@ -34,7 +34,7 @@ npm install
 npm start
 ```
 
-Open `http://localhost:4200` — requests go to the Render API above.
+Open `http://localhost:4200` — API calls go through the dev proxy to Render.
 
 ## Build
 
@@ -42,8 +42,8 @@ Open `http://localhost:4200` — requests go to the Render API above.
 npm run build
 ```
 
-Output: `dist/ms-reservation-frontend/browser` (for Cloudflare Pages and similar).
+Output: `dist/ms-reservation-frontend/browser`.
 
 ## Backend CORS
 
-The Spring Boot app configures CORS in `SecurityConfig`. Ensure **`http://localhost:4200`** and your **production UI origin** (e.g. `https://*.pages.dev`) are allowed for `/api/**`.
+The Spring Boot app configures CORS in `SecurityConfig`. For any host that calls the API **directly** (full Render URL), add that UI origin. Netlify with `/api` proxy does not need the Netlify domain in CORS for API calls.
