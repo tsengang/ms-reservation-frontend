@@ -1,0 +1,54 @@
+<header class="app-header">
+  <div class="brand">
+    <img
+      class="brand-logo"
+      src="assets/marxstein-logo.png"
+      width="48"
+      height="48"
+      alt="Marxstein Group"
+    />
+    <div class="brand-text">
+      <h1>{{ 'HEADER.APP_TITLE' | translate }}</h1>
+      @if (auth.isLoggedIn()) {
+        <p class="subtitle">{{ 'HEADER.APP_SUBTITLE' | translate }}</p>
+      }
+    </div>
+  </div>
+  <div class="header-actions">
+    @if (auth.isLoggedIn()) {
+      <span class="username">{{ auth.getUsername() }}</span>
+      <button type="button" class="logout-btn" (click)="logout()">
+        {{ 'FORMS.LOG_OUT' | translate }}
+      </button>
+    }
+    <div class="lang">
+      <button type="button" (click)="setLang('en')" [class.active]="(translate.currentLang || 'en') === 'en'">
+        EN
+      </button>
+      <button type="button" (click)="setLang('fr')" [class.active]="(translate.currentLang || 'en') === 'fr'">
+        FR
+      </button>
+    </div>
+  </div>
+</header>
+
+@if (auth.isLoggedIn()) {
+  <nav class="tabs" aria-label="Main">
+    <a routerLink="/customers" routerLinkActive="active">{{ 'TABS.CUSTOMERS' | translate }}</a>
+    <a routerLink="/drivers" routerLinkActive="active">{{ 'TABS.DRIVERS' | translate }}</a>
+    <a routerLink="/cars" routerLinkActive="active">{{ 'TABS.CARS' | translate }}</a>
+    <a routerLink="/reservations" routerLinkActive="active">{{ 'TABS.RESERVATIONS' | translate }}</a>
+  </nav>
+}
+
+<main class="content">
+  <router-outlet />
+</main>
+
+<footer class="app-footer">
+  <span>Marxstein Group</span>
+  <span class="sep">·</span>
+  <a href="https://marxstein.com/" target="_blank" rel="noopener noreferrer">marxstein.com</a>
+  <span class="sep">·</span>
+  <a href="mailto:contact&#64;marxstein.com">contact&#64;marxstein.com</a>
+</footer>

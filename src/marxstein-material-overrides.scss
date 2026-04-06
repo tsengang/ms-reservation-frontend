@@ -1,0 +1,31 @@
+/* Align Angular Material primary with marxstein.com Bootstrap theme (--primary: #5e088c) */
+html {
+  --mdc-outlined-text-field-caret-color: #5e088c;
+  --mdc-outlined-text-field-focus-outline-color: #5e088c;
+  --mdc-outlined-text-field-focus-label-text-color: rgba(94, 8, 140, 0.87);
+  --mat-form-field-focus-select-arrow-color: rgba(94, 8, 140, 0.87);
+  --mat-datepicker-calendar-date-selected-state-background-color: #5e088c;
+  --mat-datepicker-calendar-date-selected-disabled-state-background-color: rgba(94, 8, 140, 0.4);
+  --mat-datepicker-calendar-date-focus-state-background-color: rgba(94, 8, 140, 0.3);
+  --mat-datepicker-calendar-date-hover-state-background-color: rgba(94, 8, 140, 0.3);
+  --mat-datepicker-calendar-date-in-range-state-background-color: rgba(94, 8, 140, 0.2);
+  --mat-datepicker-toggle-active-state-icon-color: #5e088c;
+  --mat-option-selected-state-label-text-color: #5e088c;
+}
+
+.mat-mdc-icon-button.mat-primary {
+  --mdc-icon-button-icon-color: #5e088c;
+  --mat-icon-button-state-layer-color: #5e088c;
+  --mat-icon-button-ripple-color: rgba(94, 8, 140, 0.1);
+}
+
+.mat-datepicker-content.mat-primary,
+.mat-datepicker-content {
+  --mat-datepicker-calendar-date-selected-state-background-color: #5e088c;
+  --mat-datepicker-calendar-date-focus-state-background-color: rgba(94, 8, 140, 0.3);
+  --mat-datepicker-calendar-date-hover-state-background-color: rgba(94, 8, 140, 0.3);
+}
+
+.mat-datepicker-toggle-active.mat-primary {
+  --mat-datepicker-toggle-active-state-icon-color: #5e088c;
+}

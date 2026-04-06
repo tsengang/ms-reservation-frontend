@@ -1,0 +1,42 @@
+@import '@angular/material/prebuilt-themes/indigo-pink.css';
+@import 'marxstein-material-overrides.scss';
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+:root {
+  --ms-primary: #5e088c;
+  --ms-primary-dark: #2d0444;
+  --ms-footer: #411047;
+  --ms-muted: #6c757d;
+  --ms-light: #f8f9fa;
+  --ms-body: #212529;
+}
+
+body {
+  margin: 0;
+  font-family: 'Open Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  background: #ffffff;
+  color: var(--ms-body);
+}
+
+a {
+  color: var(--ms-primary);
+}
+
+a:hover {
+  color: var(--ms-primary-dark);
+}
+
+button {
+  cursor: pointer;
+}
+
+input,
+select,
+textarea {
+  font: inherit;
+}

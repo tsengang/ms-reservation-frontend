@@ -1,0 +1,268 @@
+<section>
+  <h2>{{ 'TABS.RESERVATIONS' | translate }}</h2>
+  <div class="toolbar">
+    <button type="button" (click)="load()">{{ 'FORMS.REFRESH' | translate }}</button>
+  </div>
+  @if (loading) {
+    <p>{{ 'FORMS.LOADING' | translate }}</p>
+  }
+  @if (listError) {
+    <p class="err">{{ 'FORMS.ERROR' | translate }}: {{ listError }}</p>
+  }
+
+  <h3>{{ 'FORMS.CREATE' | translate }}</h3>
+  @if (createError) {
+    <p class="err section-err">{{ 'FORMS.ERROR' | translate }}: {{ createError }}</p>
+  }
+  <form class="grid" (ngSubmit)="create()">
+    <label>
+      {{ 'FORMS.CAR' | translate }}
+      <select [(ngModel)]="createForm.carId" name="carId" required class="wide">
+        <option [ngValue]="null" disabled>{{ 'FORMS.SELECT_OPTION' | translate }}</option>
+        <option *ngFor="let c of cars" [ngValue]="c.id">
+          {{ c.licensePlate }} · {{ c.make }} {{ c.model }} ({{ c.year }})<span *ngIf="!c.active">
+            — {{ 'FORMS.INACTIVE' | translate }}</span>
+        </option>
+      </select>
+    </label>
+    <label>
+      {{ 'FORMS.CUSTOMER' | translate }}
+      <select [(ngModel)]="createForm.customerId" name="custId" required class="wide">
+        <option [ngValue]="null" disabled>{{ 'FORMS.SELECT_OPTION' | translate }}</option>
+        <option *ngFor="let c of customers" [ngValue]="c.id">
+          {{ c.firstName }} {{ c.lastName }} — {{ c.email }}
+          <span *ngIf="c.phoneNumber"> · {{ c.phoneNumber }}</span>
+        </option>
+      </select>
+    </label>
+
+    <div class="datetime-block">
+      <mat-form-field appearance="outline" subscriptSizing="fixed" class="datetime-mat-field">
+        <mat-label>{{ 'FORMS.START_DATE' | translate }}</mat-label>
+        <input
+          matInput
+          [matDatepicker]="pickStart"
+          [(ngModel)]="createForm.startDatePart"
+          [min]="minDate"
+          [matDatepickerFilter]="pastDateFilter"
+          name="sdp"
+          required
+        />
+        <mat-datepicker-toggle matIconSuffix [for]="pickStart" color="primary"></mat-datepicker-toggle>
+        <mat-datepicker #pickStart panelClass="compact-datepicker-panel"></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field appearance="outline" subscriptSizing="fixed" class="datetime-mat-field">
+        <mat-label>{{ 'FORMS.START_TIME' | translate }}</mat-label>
+        <input
+          matInput
+          type="time"
+          [(ngModel)]="createForm.startTime"
+          [attr.min]="startTimeMin"
+          name="st"
+          required
+        />
+      </mat-form-field>
+    </div>
+
+    <div class="datetime-block">
+      <mat-form-field appearance="outline" subscriptSizing="fixed" class="datetime-mat-field">
+        <mat-label>{{ 'FORMS.END_DATE' | translate }}</mat-label>
+        <input
+          matInput
+          [matDatepicker]="pickEnd"
+          [(ngModel)]="createForm.endDatePart"
+          [min]="minDate"
+          [matDatepickerFilter]="pastDateFilter"
+          name="edp"
+          required
+        />
+        <mat-datepicker-toggle matIconSuffix [for]="pickEnd" color="primary"></mat-datepicker-toggle>
+        <mat-datepicker #pickEnd panelClass="compact-datepicker-panel"></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field appearance="outline" subscriptSizing="fixed" class="datetime-mat-field">
+        <mat-label>{{ 'FORMS.END_TIME' | translate }}</mat-label>
+        <input
+          matInput
+          type="time"
+          [(ngModel)]="createForm.endTime"
+          [attr.min]="endTimeMin"
+          name="et"
+          required
+        />
+      </mat-form-field>
+    </div>
+
+    <button type="submit">{{ 'FORMS.CREATE' | translate }}</button>
+  </form>
+
+  @if (editingReservationId != null) {
+    <h3>{{ 'FORMS.EDIT' | translate }} #{{ editingReservationId }}</h3>
+    @if (editReservationError) {
+      <p class="err section-err">{{ 'FORMS.ERROR' | translate }}: {{ editReservationError }}</p>
+    }
+    <form class="grid" (ngSubmit)="saveReservationEdit()">
+      <label>
+        {{ 'FORMS.CAR' | translate }}
+        <select [(ngModel)]="editForm.carId" name="editCarId" required class="wide">
+          <option [ngValue]="null" disabled>{{ 'FORMS.SELECT_OPTION' | translate }}</option>
+          <option *ngFor="let c of cars" [ngValue]="c.id">
+            {{ c.licensePlate }} · {{ c.make }} {{ c.model }} ({{ c.year }})<span *ngIf="!c.active">
+              — {{ 'FORMS.INACTIVE' | translate }}</span>
+          </option>
+        </select>
+      </label>
+      <label>
+        {{ 'FORMS.CUSTOMER' | translate }}
+        <select [(ngModel)]="editForm.customerId" name="editCustId" required class="wide">
+          <option [ngValue]="null" disabled>{{ 'FORMS.SELECT_OPTION' | translate }}</option>
+          <option *ngFor="let c of customers" [ngValue]="c.id">
+            {{ c.firstName }} {{ c.lastName }} — {{ c.email }}
+            <span *ngIf="c.phoneNumber"> · {{ c.phoneNumber }}</span>
+          </option>
+        </select>
+      </label>
+
+      <div class="datetime-block">
+        <mat-form-field appearance="outline" subscriptSizing="fixed" class="datetime-mat-field">
+          <mat-label>{{ 'FORMS.START_DATE' | translate }}</mat-label>
+          <input
+            matInput
+            [matDatepicker]="editPickStart"
+            [(ngModel)]="editForm.startDatePart"
+            name="editSdp"
+            required
+          />
+          <mat-datepicker-toggle matIconSuffix [for]="editPickStart" color="primary"></mat-datepicker-toggle>
+          <mat-datepicker #editPickStart panelClass="compact-datepicker-panel"></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field appearance="outline" subscriptSizing="fixed" class="datetime-mat-field">
+          <mat-label>{{ 'FORMS.START_TIME' | translate }}</mat-label>
+          <input matInput type="time" [(ngModel)]="editForm.startTime" name="editSt" required />
+        </mat-form-field>
+      </div>
+
+      <div class="datetime-block">
+        <mat-form-field appearance="outline" subscriptSizing="fixed" class="datetime-mat-field">
+          <mat-label>{{ 'FORMS.END_DATE' | translate }}</mat-label>
+          <input
+            matInput
+            [matDatepicker]="editPickEnd"
+            [(ngModel)]="editForm.endDatePart"
+            name="editEdp"
+            required
+          />
+          <mat-datepicker-toggle matIconSuffix [for]="editPickEnd" color="primary"></mat-datepicker-toggle>
+          <mat-datepicker #editPickEnd panelClass="compact-datepicker-panel"></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field appearance="outline" subscriptSizing="fixed" class="datetime-mat-field">
+          <mat-label>{{ 'FORMS.END_TIME' | translate }}</mat-label>
+          <input matInput type="time" [(ngModel)]="editForm.endTime" name="editEt" required />
+        </mat-form-field>
+      </div>
+
+      <label>
+        {{ 'FORMS.STATUS' | translate }}
+        <select [(ngModel)]="editForm.status" name="editStt" class="wide">
+          <option value="PENDING">PENDING</option>
+          <option value="CONFIRMED">CONFIRMED</option>
+          <option value="CANCELLED">CANCELLED</option>
+        </select>
+      </label>
+
+      <div class="form-actions">
+        <button type="submit">{{ 'FORMS.UPDATE' | translate }}</button>
+        <button type="button" class="secondary" (click)="cancelEditReservation()">
+          {{ 'FORMS.CANCEL_EDIT' | translate }}
+        </button>
+      </div>
+    </form>
+  }
+
+  <h3>{{ 'FORMS.ASSIGN_DRIVER' | translate }}</h3>
+  @if (assignError) {
+    <p class="err section-err">{{ 'FORMS.ERROR' | translate }}: {{ assignError }}</p>
+  }
+  <form class="grid" (ngSubmit)="assignDriver()">
+    <label>
+      {{ 'FORMS.RESERVATION' | translate }}
+      <select [(ngModel)]="assignForm.reservationId" name="rid" required class="wide">
+        <option [ngValue]="null" disabled>{{ 'FORMS.SELECT_OPTION' | translate }}</option>
+        <option *ngFor="let r of reservations" [ngValue]="r.id">{{ reservationOptionLabel(r) }}</option>
+      </select>
+    </label>
+    <label>
+      {{ 'FORMS.DRIVER' | translate }}
+      <select [(ngModel)]="assignForm.driverId" name="did" required class="wide">
+        <option [ngValue]="null" disabled>{{ 'FORMS.SELECT_OPTION' | translate }}</option>
+        <option *ngFor="let d of drivers" [ngValue]="d.id">
+          {{ d.name }} · {{ d.licenseNumber }} · {{ d.phoneNumber }}
+        </option>
+      </select>
+    </label>
+    <button type="submit">{{ 'FORMS.ASSIGN_DRIVER' | translate }}</button>
+  </form>
+
+  <h3>{{ 'FORMS.STATUS' | translate }}</h3>
+  @if (statusError) {
+    <p class="err section-err">{{ 'FORMS.ERROR' | translate }}: {{ statusError }}</p>
+  }
+  <form class="grid" (ngSubmit)="updateStatus()">
+    <label>
+      {{ 'FORMS.RESERVATION' | translate }}
+      <select [(ngModel)]="statusForm.id" name="sid" required class="wide">
+        <option [ngValue]="null" disabled>{{ 'FORMS.SELECT_OPTION' | translate }}</option>
+        <option *ngFor="let r of reservations" [ngValue]="r.id">{{ reservationOptionLabel(r) }}</option>
+      </select>
+    </label>
+    <label>
+      {{ 'FORMS.STATUS' | translate }}
+      <select [(ngModel)]="statusForm.status" name="st">
+        <option value="PENDING">PENDING</option>
+        <option value="CONFIRMED">CONFIRMED</option>
+        <option value="CANCELLED">CANCELLED</option>
+      </select>
+    </label>
+    <button type="submit">{{ 'FORMS.SAVE' | translate }}</button>
+  </form>
+
+  <table *ngIf="reservations.length">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>{{ 'FORMS.LICENSE_PLATE' | translate }}</th>
+        <th>{{ 'FORMS.MAKE' | translate }}</th>
+        <th>{{ 'FORMS.MODEL' | translate }}</th>
+        <th>{{ 'FORMS.FIRST_NAME' | translate }}</th>
+        <th>{{ 'FORMS.LAST_NAME' | translate }}</th>
+        <th>{{ 'FORMS.EMAIL' | translate }}</th>
+        <th>{{ 'FORMS.START_DATE' | translate }}</th>
+        <th>{{ 'FORMS.END_DATE' | translate }}</th>
+        <th>{{ 'FORMS.STATUS' | translate }}</th>
+        <th>{{ 'FORMS.DRIVER_FIRST_NAME' | translate }}</th>
+        <th>{{ 'FORMS.DRIVER_LAST_NAME' | translate }}</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let r of reservations">
+        <td>{{ r.id }}</td>
+        <td>{{ r.licensePlate }}</td>
+        <td>{{ r.carMake }}</td>
+        <td>{{ r.carModel }}</td>
+        <td>{{ r.customerFirstName }}</td>
+        <td>{{ r.customerLastName }}</td>
+        <td>{{ r.customerEmail }}</td>
+        <td>{{ r.startDate | date: 'medium' }}</td>
+        <td>{{ r.endDate | date: 'medium' }}</td>
+        <td>{{ r.status }}</td>
+        <td>{{ r.driverFirstName }}</td>
+        <td>{{ r.driverLastName }}</td>
+        <td class="cell-actions">
+          <button type="button" class="edit-btn" (click)="startEditReservation(r)">{{ 'FORMS.EDIT' | translate }}</button>
+          <button type="button" class="delete-btn" (click)="delete(r.id)">{{ 'FORMS.DELETE' | translate }}</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <p *ngIf="!loading && !reservations.length">{{ 'FORMS.EMPTY' | translate }}</p>
+</section>

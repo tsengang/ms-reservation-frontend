@@ -1,0 +1,91 @@
+@import '../customers/customers.component.scss';
+
+h3 {
+  margin: 1.25rem 0 0.5rem;
+  font-size: 1rem;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 600;
+  color: var(--ms-muted, #6c757d);
+}
+
+button.edit-btn {
+  padding: 0.25rem 0.5rem;
+  border-radius: 6px;
+  border: 1px solid #d1d5db;
+  background: #ffffff;
+  color: #374151;
+
+  &:hover {
+    background: #f9fafb;
+  }
+}
+
+button.delete-btn {
+  padding: 0.25rem 0.5rem;
+  border-radius: 6px;
+  border: 1px solid #fca5a5;
+  background: #ffffff;
+  color: #b91c1c;
+}
+
+select.wide {
+  min-width: min(100%, 28rem);
+  max-width: 100%;
+}
+
+.cell-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.datetime-block {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 0 0.75rem;
+  align-items: start;
+  max-width: 22rem;
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 520px) {
+  .datetime-block {
+    grid-template-columns: 1fr;
+  }
+}
+
+.datetime-mat-field {
+  width: 100%;
+}
+
+::ng-deep .datetime-block .mat-mdc-form-field {
+  width: 100%;
+}
+
+::ng-deep .datetime-block .mat-mdc-text-field-wrapper {
+  background-color: #ffffff;
+}
+
+::ng-deep .datetime-block .mat-mdc-form-field-infix {
+  min-height: 48px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  box-sizing: border-box;
+}
+
+.section-err {
+  margin: 0 0 0.5rem;
+  font-size: 0.9rem;
+}
+
+::ng-deep .compact-datepicker-panel .mat-datepicker-content,
+::ng-deep .compact-datepicker-panel.mat-datepicker-content {
+  width: 220px;
+  max-width: min(220px, 85vw);
+}
+
+::ng-deep .compact-datepicker-panel .mat-calendar {
+  width: 220px;
+}
