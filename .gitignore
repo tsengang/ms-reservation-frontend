@@ -2,3 +2,6 @@
 /dist
 /.angular
 .DS_Store
+
+# Local Netlify folder
+.netlify

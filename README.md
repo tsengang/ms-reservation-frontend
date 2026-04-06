@@ -18,10 +18,13 @@ This project is **next to** the Java backend repo, not inside it:
   ms-reservation-frontend/ ← this Angular app
 ```
 
-## Prerequisites
+## API URL
 
-- Node.js **18.19+** (recommended for Angular 18 CLI; Angular **17** tooling works with Node 18 LTS)
-- For local API calls: backend running at `http://localhost:8080` (see `src/environments/environment.ts` and `proxy.conf.json`)
+A single environment file points at the hosted API:
+
+- `src/environments/environment.ts` → `https://ms-reservation.onrender.com/api`
+
+`ng serve` and `ng build` both use this URL. For local development, the backend must allow your origin in CORS (e.g. `http://localhost:4200`).
 
 ## Install and run
 
@@ -31,7 +34,7 @@ npm install
 npm start
 ```
 
-Open `http://localhost:4200`. Dev mode uses the proxy so `/api` is forwarded to `http://localhost:8080`.
+Open `http://localhost:4200` — requests go to the Render API above.
 
 ## Build
 
@@ -39,8 +42,8 @@ Open `http://localhost:4200`. Dev mode uses the proxy so `/api` is forwarded to 
 npm run build
 ```
 
-Output: `dist/ms-reservation-frontend`.
+Output: `dist/ms-reservation-frontend/browser` (for Cloudflare Pages and similar).
 
 ## Backend CORS
 
-The Spring Boot app configures CORS in `SecurityConfig` (allowing `http://localhost:4200` for `/api/**`). Add your production UI origin when you deploy.
+The Spring Boot app configures CORS in `SecurityConfig`. Ensure **`http://localhost:4200`** and your **production UI origin** (e.g. `https://*.pages.dev`) are allowed for `/api/**`.
